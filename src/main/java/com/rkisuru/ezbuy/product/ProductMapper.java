@@ -10,6 +10,7 @@ public class ProductMapper {
                 .name(productRequest.name())
                 .description(productRequest.description())
                 .price(productRequest.price())
+                .stock(productRequest.stock())
                 .category(Category.valueOf(productRequest.category()))
                 .build();
     }
@@ -21,6 +22,7 @@ public class ProductMapper {
                 .description(product.getDescription())
                 .category(product.getCategory().toString())
                 .price(product.getPrice())
+                .stock(product.getStock())
                 .build();
     }
 }

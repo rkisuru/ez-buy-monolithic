@@ -45,6 +45,9 @@ public class ProductService {
         if (request.price() != null) {
             existingProduct.setPrice(request.price());
         }
+        if (request.stock() != null) {
+            existingProduct.setStock(request.stock());
+        }
         if (request.category() != null) {
             existingProduct.setCategory(Category.valueOf(request.category()));
         }

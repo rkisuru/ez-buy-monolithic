@@ -25,5 +25,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private BigDecimal price;
+    private Double price;
+    private Integer stock;
 }
