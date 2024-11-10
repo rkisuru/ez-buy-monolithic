@@ -1,10 +1,9 @@
-package com.rkisuru.ezbuy.payment;
+package com.rkisuru.ezbuy.purchase;
 
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.rkisuru.ezbuy.order.Order;
 import com.rkisuru.ezbuy.order.OrderRepository;
-import com.rkisuru.ezbuy.order.OrderService;
 import com.rkisuru.ezbuy.order.OrderStatus;
 import com.rkisuru.ezbuy.paypal.PaypalService;
 import jakarta.persistence.EntityNotFoundException;
