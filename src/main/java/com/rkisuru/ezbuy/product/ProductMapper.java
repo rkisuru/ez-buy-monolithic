@@ -20,7 +20,7 @@ public class ProductMapper {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .category(product.getCategory().toString())
+                .category(product.getCategory().toString().substring(0, 1).toUpperCase() + product.getCategory().toString().substring(1).toLowerCase())
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .build();
