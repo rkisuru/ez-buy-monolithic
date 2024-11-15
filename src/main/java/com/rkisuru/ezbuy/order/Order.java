@@ -31,5 +31,4 @@ public class Order {
 
     private LocalDateTime orderDate;
     private String userId;
-    private String userName;
 }

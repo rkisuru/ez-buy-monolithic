@@ -1,13 +1,11 @@
 package com.rkisuru.ezbuy.order;
 
-import com.rkisuru.ezbuy.payment.Purchase;
-import com.rkisuru.ezbuy.payment.PurchaseRepository;
+import com.rkisuru.ezbuy.purchase.Purchase;
+import com.rkisuru.ezbuy.purchase.PurchaseRepository;
 import com.rkisuru.ezbuy.product.Product;
 import com.rkisuru.ezbuy.product.ProductRepository;
-import com.rkisuru.ezbuy.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +17,6 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final UserService userService;
     private final PurchaseRepository purchaseRepository;
 
     public Product initOrder(Long productId) {
@@ -28,7 +25,7 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
-    public Order createOrder(Long productId, Integer quantity) throws Exception {
+    public Order createOrder(Long productId, Integer quantity, String oAuth2User) throws Exception {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
@@ -43,8 +40,7 @@ public class OrderService {
         order.setTotalPrice(product.getPrice() * quantity);
         order.setStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDateTime.now());
-        order.setUserId(userService.getUserId());
-        order.setUserName(userService.getUsername());
+        order.setUserId(oAuth2User);
 
         product.setStock(product.getStock() - quantity);
         productRepository.save(product);
@@ -52,12 +48,12 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> getAllOrders(Authentication user) {
-        return orderRepository.findOrdersByUser(user);
+    public List<Order> getAllOrders(String oAuth2User) {
+        return orderRepository.findOrdersByUser(oAuth2User);
     }
 
-    public Order getOrderById(Long orderId, Authentication user) {
-        return orderRepository.findOrderByUser(user, orderId);
+    public Order getOrderById(Long orderId, String oAuth2User) {
+        return orderRepository.findOrderByUser(oAuth2User, orderId);
     }
 
     public void deleteOrder(Long orderId) {
@@ -67,7 +63,6 @@ public class OrderService {
         }
         orderRepository.deleteById(orderId);
     }
-
     public Double totalPrice(Integer quantity, Double price) {
         return quantity * price;
     }

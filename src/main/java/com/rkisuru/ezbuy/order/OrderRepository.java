@@ -1,17 +1,16 @@
 package com.rkisuru.ezbuy.order;
 
-import com.rkisuru.ezbuy.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("SELECT orders FROM Order orders WHERE orders.userId = ?#{authentication.principal.claims['sub']}")
-    List<Order> findOrdersByUser(Authentication authentication);
+    @Query("SELECT orders FROM Order orders WHERE orders.userId = :userId")
+    List<Order> findOrdersByUser(String userId);
 
-    @Query("SELECT order FROM Order order WHERE order.userId = ?#{authentication.principal.claims['sub']} AND order.id = :orderId")
-    Order findOrderByUser(Authentication authentication, Long orderId);
+    @Query("SELECT order FROM Order order WHERE order.userId = :userId AND order.id = :orderId")
+    Order findOrderByUser(String userId, @Param("orderId") Long orderId);
 }
